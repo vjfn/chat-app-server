@@ -1,7 +1,7 @@
 {
-  "name": "chatapp_server",
+  "name": "chat_app_server",
   "version": "1.0.0",
-  "description": "Una aplicacion de chat usando ionic",
+  "description": "Backend de una aplicacion de chat usando ionic",
   "main": "index.js",
   "scripts": {
     "test": "npm run test"

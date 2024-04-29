@@ -13,14 +13,8 @@ nodemon
 npm install -g nodemon
 
 //CLIENTE frontend
-ng serve
+ionic serve
 
-//MODULES
-express:
-npm install express
-
-nodemon:
-npm install -g nodemon
 
 socket.io:
 npm i ngx-socket-io
