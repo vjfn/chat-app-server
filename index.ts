@@ -13,6 +13,7 @@ import postRoutes from './routes/post';
 
 import fileUpload from 'express-fileupload'
 import SocketCustomEvents from './sockets/sockets-custom-events';
+import chatMsgRoutes from './routes/chat-msg';
 
 /* const server = new Server({ cors: { origin: 'http://localhost:4200' } }); */
 
@@ -40,6 +41,7 @@ app.use( fileUpload());
 app.use('/', userRoutes) 
 app.use('/user', userRoutes)
 app.use('/posts', postRoutes)
+app.use('/msg', chatMsgRoutes)
 
 //Conexion a DB (protocolo,puerto,nombre de bd)
 //TODO Conexion segura a BD

@@ -1,5 +1,6 @@
 import { Server, Socket } from 'socket.io';
 import { Usuario } from '../models/usuario.model';
+import { ChatMsg } from '../models/chat-msg.model';
 
 export default class SocketsCustomEvents {
   private io: Server;
@@ -74,13 +75,17 @@ export default class SocketsCustomEvents {
     // handle message to user
     this.socket.on('message-to-user', async (data) => {
       const user = await Usuario.findOne({ name: data.to })
-      console.log({
-        user,
-        data
-      });
+      console.log({ user, data});
+
       if (user) {
         const mySelf = await Usuario.findOne({ socketId: this.socket.id });
         this.socket.to(user.socketId).emit('message-to-user', { from: mySelf?.name, message: data.message });
+        ChatMsg.create({
+          msg: data.message,
+          owner: mySelf?._id,
+          receiver: user._id,
+          file: null
+        })
       }
     });
 
