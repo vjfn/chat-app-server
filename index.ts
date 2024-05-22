@@ -15,6 +15,8 @@ import fileUpload from 'express-fileupload'
 import SocketCustomEvents from './sockets/sockets-custom-events';
 import chatMsgRoutes from './routes/chat-msg';
 
+import path from 'path';
+
 /* const server = new Server({ cors: { origin: 'http://localhost:4200' } }); */
 
 const app = express();
@@ -30,6 +32,8 @@ const io = new SocketServer(server, {
 //bodyParser-Middleware body parser va siempre primero
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.use('/uploads', express.static(path.join(__dirname, '.', 'uploads')));
 
 //fileUpload-Middleware, gestor de archivos
 app.use( fileUpload());

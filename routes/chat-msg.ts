@@ -9,6 +9,8 @@ import { Usuario } from '../models/usuario.model';
 
 
 const chatMsgRoutes = Router();
+const fileSystem = new FileSystem();
+
 
 chatMsgRoutes.post('/', [verificaToken], async (req: any, res: Response) => {
     const owner = req.usuario._id;
@@ -20,7 +22,7 @@ chatMsgRoutes.post('/', [verificaToken], async (req: any, res: Response) => {
     console.log({
         receiver
     });
-    const lastMsgs = await ChatMsg.find({ 
+    const lastMsgs = await ChatMsg.find({
         $or: [
             { owner, receiver: receiver?._id },
             { owner: receiver?._id, receiver: owner }
@@ -36,8 +38,39 @@ chatMsgRoutes.post('/', [verificaToken], async (req: any, res: Response) => {
     return res.json({ ok: true, lastMsgs });
 });
 
-chatMsgRoutes.post('/', [verificaToken], async (req: any, res: Response) => {
+chatMsgRoutes.post('/file', [verificaToken], async (req: any, res: Response) => {
+    if (!req.files) {
+        return res.status(400).json({
+            ok: false,
+            mensaje: 'No se subio ningun archivo'
+        });
+    }
 
+    const file: FileUpload = req.files.image as UploadedFile
+
+    if (!file) {
+        return res.status(400).json({
+            ok: false,
+            mensaje: 'No se subio ningun archivo - imagen'
+        });
+    }
+
+    if (!file.mimetype.includes('image')) {
+        return res.status(400).json({
+            ok: false,
+            mensaje: 'No me mandes cosas que no sean una imagen'
+        });
+    }
+
+    await fileSystem.guardarImagenTemporal(file, req.usuario._id);
+    const image = await fileSystem.imagenesDeTempHaciaPost(req.usuario._id);
+
+    res.json({
+        ok: true,
+        mensaje: 'Imagen gestionada',
+        file: file.mimetype,
+        image
+    })
 });
 
 

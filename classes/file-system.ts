@@ -63,7 +63,7 @@ export class FileSystem {
         return pathUserTemp;
     }
 
-    imagenesDeTempHaciaPost(userId: string) {
+    async imagenesDeTempHaciaPost(userId: string) {
 
         const pathTemp = path.resolve(__dirname, '../uploads', userId, 'temp');
         const pathPost = path.resolve(__dirname, '../uploads', userId, 'posts');
@@ -82,7 +82,7 @@ export class FileSystem {
             fs.renameSync(`${pathTemp}/${imagen}`, `${pathPost}/${imagen}`);
         });
 
-        return imagenesTemp;
+        return imagenesTemp[0];
     }
 
     private obtenerImagenesEnTemp(userId: string) {
@@ -104,10 +104,8 @@ export class FileSystem {
             return path.resolve(__dirname, '../assets/400x250.jpg');
         }
 
-        
-
+    
         return pathFoto;
-
     }
 
 }

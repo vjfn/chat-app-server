@@ -79,12 +79,15 @@ export default class SocketsCustomEvents {
 
       if (user) {
         const mySelf = await Usuario.findOne({ socketId: this.socket.id });
-        this.socket.to(user.socketId).emit('message-to-user', { from: mySelf?.name, message: data.message });
+
+        const file = data.file ? `/${mySelf?._id}/posts/${data.file}` : null;
+
+        this.socket.to(user.socketId).emit('message-to-user', { from: mySelf?.name, message: data.message, file });
         ChatMsg.create({
           msg: data.message,
           owner: mySelf?._id,
           receiver: user._id,
-          file: null
+          file
         })
       }
     });
