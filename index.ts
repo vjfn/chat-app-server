@@ -24,7 +24,7 @@ const app = express();
 app.use(cors({ origin: true, credentials: true}));
 const server = http.createServer(app);
 const io = new SocketServer(server, {
-    cors: { origin: 'http://localhost:8100' }
+    cors: { origin: 'https://quepasa.flushfinder.es' }
 });
 
 //MIDDLEWARE el orden es importante, segun su uso
