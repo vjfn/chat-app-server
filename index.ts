@@ -49,7 +49,7 @@ app.use('/msg', chatMsgRoutes)
 
 //Conexion a DB (protocolo,puerto,nombre de bd)
 //TODO Conexion segura a BD
-mongoose.connect(`mongodb://admin:multisyncv72mongodb@server.flushfinder.es:27017/quepasa-test?authMechanism=DEFAULT&authSource=admin`);
+mongoose.connect(`mongodb://admin:multisyncv72mongodb@localhost:27017/quepasa-test?authMechanism=DEFAULT&authSource=admin`);
 const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
