@@ -1,6 +1,6 @@
 import express from 'express';
 import http from 'http';
-import { Server as SocketServer, Socket} from 'socket.io';
+import { Server as SocketServer, Socket } from 'socket.io';
 
 import userRoutes from './routes/usuario';
 
@@ -21,10 +21,16 @@ import path from 'path';
 
 const app = express();
 // Configurar CORS
-app.use(cors({ origin: true, credentials: true}));
+app.use(cors({ origin: true, credentials: true }));
 const server = http.createServer(app);
+
+const allowedOrigins = ['https://quepasa.flushfinder.es', 'http://localhost', 'https://localhost', 'http://localhost:8100'];
+
 const io = new SocketServer(server, {
-    cors: { origin: 'https://quepasa.flushfinder.es', credentials: true }
+    cors: {
+        origin: (origin, cb) => !origin || allowedOrigins.indexOf(origin) !== -1 ? cb(null, true) : cb(new Error('CORS no permitido')),
+        credentials: true
+    }
 });
 
 //MIDDLEWARE el orden es importante, segun su uso
@@ -36,13 +42,13 @@ app.use(bodyParser.json());
 app.use('/uploads', express.static(path.join(__dirname, '.', 'uploads')));
 
 //fileUpload-Middleware, gestor de archivos
-app.use( fileUpload());
+app.use(fileUpload());
 
 //Configurar CORS
 /* app.use(cors({ origin: true, credentials: true})); */
 
 //Rutas de mi app, las rutas van al final
-app.use('/', userRoutes) 
+app.use('/', userRoutes)
 app.use('/user', userRoutes)
 app.use('/posts', postRoutes)
 app.use('/msg', chatMsgRoutes)
